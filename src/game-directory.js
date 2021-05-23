@@ -69,12 +69,14 @@ export default function GameDirectory() {
     const classes = useStyles();
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [cards, setCards] = useState([]);
+    const [gameSelected, setGameSelected] = useState(null);
     useEffect(() => {
         if (cards.length === 0) {
             getGames();
         }
     }, []);
     const getGames = () => {
+        console.log("cargando juegos");
         axios
                 .get(
                     `games`
@@ -104,6 +106,13 @@ export default function GameDirectory() {
             })
             .catch((err) => console.log(err));
     };
+    const handleEdit = (game) => {
+        setGameSelected(game);
+
+
+        setOpenEditDialog(true)
+    };
+    
 
     return (
         <React.Fragment>
@@ -148,7 +157,6 @@ export default function GameDirectory() {
                                 <Card className={classes.card} id={card.id}>
                                     <CardMedia
                                         className={classes.cardMedia}
-                                        // image="https://source.unsplash.com/random"
                                         image={card.img}
                                         title="Image title"
                                     />
@@ -168,7 +176,7 @@ export default function GameDirectory() {
                                             id="btn-edit"
                                             size="small"
                                             color="primary"
-                                            onClick={() => setOpenEditDialog(true)}
+                                            onClick={() => handleEdit(card)}
                                         >
                                             Editar
                                         </Button>
@@ -192,8 +200,8 @@ export default function GameDirectory() {
                             message="Ventana para agregar juegos"
                             open={openEditDialog}
                             setOpen={setOpenEditDialog}
+                            game={gameSelected}
                         />
-                        getGames();
                     </Grid>
                 </Container>
             </main>

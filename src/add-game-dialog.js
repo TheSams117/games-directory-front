@@ -15,6 +15,8 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import axios from "./utils/axios";
+import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -24,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const AddGameDialog = (props) => {
   const classes = useStyles();
-  const { title, message, open, setOpen } = props;
+  let history = useHistory();
+  const { title, message, open, setOpen, game } = props;
   const [gameName, setGameName] = useState("");
   const [console, setConsole] = useState("");
   const [gameGenre, setGameGenre] = useState("");
@@ -46,20 +49,35 @@ const AddGameDialog = (props) => {
     });
   }
   const handleSubmit = () => {
+    if (game == null) {
+      createGame()
+    }
+    else {
+      editGame()
+    }
+
+
+  };
+  const createGame = () => {
     let data = {
       name: gameName,
       console: console,
       genre: gameGenre,
       img: gameImgUrl
     };
+
     axios
       .post(
         `games`, data
       )
       .then((res) => {
         console.log(res);
-        if (res.status === 200)
+        if (res.status === 200) {
           console.log("Juego agregado con éxito");
+          setOpen(false);
+        }
+
+
 
         else console.log(res.status);
       })
@@ -68,9 +86,39 @@ const AddGameDialog = (props) => {
         // console.log(err)
       });
 
+
+
   };
+  const editGame = () => {
+    let data = {
+      name: gameName === "" ? game.name : gameName,
+      console: console === "" ? game.console : console,
+      genre: gameGenre === "" ? game.genre : gameGenre,
+      img: gameImgUrl === "" ? game.img : gameImgUrl
+    };
 
 
+    axios
+      .put(
+        `games`, data
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          console.log("Juego agregado con éxito");
+          setOpen(false);
+          history.push("http://localhost:3000/");
+        }
+        else console.log(res.status);
+      })
+      .catch((err) => {
+        setOpen(false);
+        // console.log(err)
+      });
+
+
+
+  };
 
 
   return (
@@ -81,7 +129,7 @@ const AddGameDialog = (props) => {
     >
       <DialogTitle id="form-dialog-title" disableTypography={true}>
         <Typography variant="h4" color="primary">
-          {title}
+          {game == null ? "Agregar juego" : "Editar juego"}
         </Typography>
       </DialogTitle>
 
@@ -91,12 +139,11 @@ const AddGameDialog = (props) => {
         </DialogContentText> */}
         <Grid container spacing={2} justify="center">
           <Grid item xs={12} sm={6}>
-            {/* <Typography variant="h5">Nombre del juego</Typography> */}
             <TextField
               id="game-name"
               label="Nombre"
+              defaultValue={game == null ? "" : game.name}
               onChange={e => setGameName(e.target.value)}
-              // onChange={handleInputChange}
               type="text"
             />
           </Grid>
@@ -118,19 +165,19 @@ const AddGameDialog = (props) => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            {/* <Typography variant="h5">Género</Typography> */}
             <TextField
               id="game-name"
               label="Género"
+              defaultValue={game == null ? "" : game.genre}
               onChange={e => setGameGenre(e.target.value)}
               type="text"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            {/* <Typography variant="h5">Ruta de la imagen</Typography> */}
             <TextField
               id="game-name"
               label="Ruta de la imagen"
+              defaultValue={game == null ? "" : game.img}
               onChange={e => setGameImgUrl(e.target.value)}
               type="text"
             />
@@ -143,8 +190,8 @@ const AddGameDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSubmit} color="primary">
-          Agregar
-          </Button>
+          {game == null ? "Agregar" : "Editar"}
+        </Button>
         <Button onClick={handleClose} color="primary">
           Cancelar
           </Button>
@@ -160,5 +207,6 @@ AddGameDialog.propTypes = {
   message: PropTypes.string,
   open: PropTypes.bool,
   setOpen: PropTypes.func,
+  game: PropTypes.any,
 };
 export default (AddGameDialog);

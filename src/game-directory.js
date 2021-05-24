@@ -16,6 +16,16 @@ import Link from '@material-ui/core/Link';
 import { useState, useEffect } from "react";
 import AddGameDialog from "./add-game-dialog";
 import axios from "./utils/axios";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
 
 function Copyright() {
     return (
@@ -31,6 +41,9 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    formControl: {
+        minWidth: 190,
+    },    
     icon: {
         marginRight: theme.spacing(2),
     },
@@ -69,6 +82,10 @@ export default function GameDirectory() {
     const classes = useStyles();
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [cards, setCards] = useState([]);
+    const [gameName, setGameName] = useState("");
+    const [consoleGame, setConsoleGame] = useState("");
+    const [gameGenre, setGameGenre] = useState("");
+    const [gameImgUrl, setGameImgUrl] = useState("");
     const [gameSelected, setGameSelected] = useState(null);
     useEffect(() => {
         if (cards.length === 0) {
@@ -90,7 +107,6 @@ export default function GameDirectory() {
                 .catch((err) => console.log(err));
     }
     const handleDelete = (idGame) => {
-
         axios
             .delete(
                 `games/${idGame}`,
@@ -106,13 +122,93 @@ export default function GameDirectory() {
             })
             .catch((err) => console.log(err));
     };
-    const handleEdit = (game) => {
-        setGameSelected(game);
-
-
+    const handleCreate = () => {
+        setGameSelected(null);
         setOpenEditDialog(true)
     };
+    const handleEdit = (game) => {
+        setGameSelected(game);
+        setOpenEditDialog(true)
+    };
+    const handleClose = () => {
+        setOpenEditDialog(false);
+      };
+    const handleChange = (event) => {
+        setConsoleGame(event.target.value);
+    };
+    const handleSubmit = () => {
+        if (gameSelected == null) {
+            console.log("crear")
+          createGame()
+        }
+        else {
+          console.log("editar")
+          editGame()
+        }    
+    };
+    const createGame = () => {
+        let data = {
+          name: gameName,
+          console: consoleGame,
+          genre: gameGenre,
+          img: gameImgUrl
+        };
     
+        axios
+          .post(
+            `games`, data
+          )
+          .then((res) => {
+            console.log(res);
+            if (res.status === 200) {
+              console.log("Juego agregado con éxito");
+              getGames();
+              restartValues()  
+              setOpenEditDialog(false);                          
+            }   
+            else console.log(res.status);
+          })
+          .catch((err) => {
+            setOpenEditDialog(false);
+            // console.log(err)
+          });    
+      };
+
+      const editGame = () => {
+        let data = {
+          id: gameSelected.id,
+          name: gameName === "" ? gameSelected.name : gameName,
+          console: consoleGame === "" ? gameSelected.console : consoleGame,
+          genre: gameGenre === "" ? gameSelected.genre : gameGenre,
+          img: gameImgUrl === "" ? gameSelected.img : gameImgUrl
+        };   
+    
+        axios
+          .put(
+            `games`, data
+          )
+          .then((res) => {
+            console.log(res);
+            if (res.status === 200) {
+              console.log("Juego agregado con éxito");
+              getGames();
+              restartValues()
+              setOpenEditDialog(false);
+            }
+            else console.log(res.status);
+          })
+          .catch((err) => {
+            setOpenEditDialog(false);
+            // console.log(err)
+          });    
+      };
+    const restartValues = () => {
+        setGameSelected(null);
+        setGameName("");
+        setConsoleGame("");
+        setGameGenre("");
+        setGameImgUrl("");        
+    } 
 
     return (
         <React.Fragment>
@@ -141,7 +237,7 @@ export default function GameDirectory() {
                                         id-button="btn-add"
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => setOpenEditDialog(true)}
+                                        onClick={() => handleCreate()}
                                     >
                                         Agregar
                                     </Button>
@@ -191,17 +287,80 @@ export default function GameDirectory() {
                                         </Button>
                                     </CardActions>
                                 </Card>
-
-
                             </Grid>
                         ))}
-                        <AddGameDialog
-                            title="Agregar juego"
-                            message="Ventana para agregar juegos"
+                        <Dialog
                             open={openEditDialog}
-                            setOpen={setOpenEditDialog}
-                            game={gameSelected}
-                        />
+                            onClose={handleClose}
+                            aria-labelledby="form-dialog-title"
+                        >
+                        <DialogTitle id="form-dialog-title" disableTypography={true}>
+                            <Typography variant="h4" color="primary">
+                            {gameSelected == null ? "Agregar juego" : "Editar juego"}
+                            </Typography>
+                        </DialogTitle>
+
+                        <DialogContent>
+                            {/* <DialogContentText variant="h4" color="textSecondary">
+                            {message}
+                            </DialogContentText> */}
+                            <Grid container spacing={2} justify="center">
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                id="game-name"
+                                label="Nombre"
+                                defaultValue={gameSelected == null ? "" : gameSelected.name}
+                                onChange={e => setGameName(e.target.value)}
+                                type="text"
+                            />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl className={classes.formControl}>
+                                <InputLabel id="select-console">Consola</InputLabel>
+                                <Select
+                                    labelId="select-console"
+                                    id="demo-simple-select"
+                                    value={consoleGame}
+                                    onChange={handleChange}
+                                >
+                                <MenuItem value={"PC"}>PC</MenuItem>
+                                <MenuItem value={"Xbox"}>Xbox</MenuItem>
+                                <MenuItem value={"PlayStation"}>PlayStation</MenuItem>
+                                </Select>
+                                </FormControl>
+
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                id="game-name"
+                                label="Género"
+                                defaultValue={gameSelected == null ? "" : gameSelected.genre}
+                                onChange={e => setGameGenre(e.target.value)}
+                                type="text"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                id="game-name"
+                                label="Ruta de la imagen"
+                                defaultValue={gameSelected == null ? "" : gameSelected.img}
+                                onChange={e => setGameImgUrl(e.target.value)}
+                                type="text"
+                                />
+                            </Grid>
+                        </Grid>
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleSubmit} color="primary">
+                            {gameSelected == null ? "Agregar" : "Editar"}
+                            </Button>
+                            <Button onClick={handleClose} color="primary">
+                                Cancelar
+                            </Button>
+                        </DialogActions>
+                        </Dialog>
                     </Grid>
                 </Container>
             </main>

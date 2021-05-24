@@ -97,7 +97,6 @@ const AddGameDialog = (props) => {
       img: gameImgUrl === "" ? game.img : gameImgUrl
     };
 
-
     axios
       .put(
         `games`, data
@@ -115,9 +114,6 @@ const AddGameDialog = (props) => {
         setOpen(false);
         // console.log(err)
       });
-
-
-
   };
 
 

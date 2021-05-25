@@ -7,23 +7,22 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from "prop-types";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
 import axios from "./utils/axios";
 import { useHistory } from "react-router-dom";
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: 190,
   },
-
 }));
+
 const AddGameDialog = (props) => {
   const classes = useStyles();
   let history = useHistory();
@@ -36,86 +35,74 @@ const AddGameDialog = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleChange = (event) => {
     setConsole(event.target.value);
   };
+
   const handleInputChange = (event) => {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
-  }
+  };
+
   const handleSubmit = () => {
     if (game == null) {
-      createGame()
+      createGame();
+    } else {
+      editGame();
     }
-    else {
-      editGame()
-    }
-
-
   };
+
   const createGame = () => {
     let data = {
       name: gameName,
       console: console,
       genre: gameGenre,
-      img: gameImgUrl
+      img: gameImgUrl,
     };
-
-    axios
-      .post(
-        `games`, data
-      )
+    /**axios
+      .post(`games`, data)
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          console.log("Juego agregado con éxito");
+          console.log("Juego agregado con éxito game dialog");
           setOpen(false);
-        }
-
-
-
-        else console.log(res.status);
+        } else console.log(res.status);
       })
       .catch((err) => {
         setOpen(false);
         // console.log(err)
-      });
-
-
-
+      });*/
+      console.log("METODO VACIO EN ADD-GAME-DIALOG");
   };
+
   const editGame = () => {
     let data = {
       name: gameName === "" ? game.name : gameName,
       console: console === "" ? game.console : console,
       genre: gameGenre === "" ? game.genre : gameGenre,
-      img: gameImgUrl === "" ? game.img : gameImgUrl
+      img: gameImgUrl === "" ? game.img : gameImgUrl,
     };
-
     axios
-      .put(
-        `games`, data
-      )
+      .put(`games`, data)
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
           console.log("Juego agregado con éxito");
           setOpen(false);
           history.push("http://localhost:3000/");
-        }
-        else console.log(res.status);
+        } else console.log(res.status);
       })
       .catch((err) => {
         setOpen(false);
         // console.log(err)
       });
   };
-
 
   return (
     <Dialog
@@ -139,7 +126,7 @@ const AddGameDialog = (props) => {
               id="game-name"
               label="Nombre"
               defaultValue={game == null ? "" : game.name}
-              onChange={e => setGameName(e.target.value)}
+              onChange={(e) => setGameName(e.target.value)}
               type="text"
             />
           </Grid>
@@ -157,7 +144,6 @@ const AddGameDialog = (props) => {
                 <MenuItem value={"PlayStation"}>PlayStation</MenuItem>
               </Select>
             </FormControl>
-
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -165,7 +151,7 @@ const AddGameDialog = (props) => {
               id="game-name"
               label="Género"
               defaultValue={game == null ? "" : game.genre}
-              onChange={e => setGameGenre(e.target.value)}
+              onChange={(e) => setGameGenre(e.target.value)}
               type="text"
             />
           </Grid>
@@ -174,15 +160,11 @@ const AddGameDialog = (props) => {
               id="game-name"
               label="Ruta de la imagen"
               defaultValue={game == null ? "" : game.img}
-              onChange={e => setGameImgUrl(e.target.value)}
+              onChange={(e) => setGameImgUrl(e.target.value)}
               type="text"
             />
           </Grid>
-
-
-
         </Grid>
-
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSubmit} color="primary">
@@ -190,13 +172,11 @@ const AddGameDialog = (props) => {
         </Button>
         <Button onClick={handleClose} color="primary">
           Cancelar
-          </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );
 };
-
-
 
 AddGameDialog.propTypes = {
   title: PropTypes.string,
@@ -205,4 +185,4 @@ AddGameDialog.propTypes = {
   setOpen: PropTypes.func,
   game: PropTypes.any,
 };
-export default (AddGameDialog);
+export default AddGameDialog;

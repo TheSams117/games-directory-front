@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game Directory Service When a request to list all games is made should return the correct data 1`] = `
+Array [
+  Object {
+    "console": "PC",
+    "genre": "Action",
+    "img": "https://images3.alphacoders.com/823/thumb-1920-82365.jpg",
+    "name": "Assassins Creed",
+  },
+]
+`;

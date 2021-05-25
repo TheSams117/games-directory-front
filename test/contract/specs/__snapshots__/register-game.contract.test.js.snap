@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game Directory Service When a request to add a game is made Then it should return the right data 1`] = `
+Object {
+  "console": "PC",
+  "genre": "FPS",
+  "img": "https://www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg",
+  "name": "Halo",
+}
+`;

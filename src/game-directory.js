@@ -89,7 +89,7 @@ export default function GameDirectory() {
     if (cards.length === 0) {
       getGames();
     }
-  }, []);
+  });
 
   const getGames = () => {
     console.log("cargando juegos");

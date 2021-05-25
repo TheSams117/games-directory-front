@@ -78,7 +78,6 @@ const AddGameDialog = (props) => {
         setOpen(false);
         // console.log(err)
       });*/
-      console.log("METODO VACIO EN ADD-GAME-DIALOG");
   };
 
   const editGame = () => {

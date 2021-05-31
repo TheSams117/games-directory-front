@@ -17,10 +17,10 @@ describe('Game Directory Service', () => {
                     status: 200,
                     body: Matchers.eachLike(
                         {
-                            name: Matchers.like('Assassins Creed'),
-                            console: Matchers.like('PC'),
-                            genre: Matchers.like('Action'),
-                            img: Matchers.like('https://images3.alphacoders.com/823/thumb-1920-82365.jpg')
+                            name: Matchers.string('Assassins Creed'),
+                            console: Matchers.string('PC'),
+                            genre: Matchers.string('Action'),
+                            img: Matchers.string('https://images3.alphacoders.com/823/thumb-1920-82365.jpg')
                         }
                     )
                 }

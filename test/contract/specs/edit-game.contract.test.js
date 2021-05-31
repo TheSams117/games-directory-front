@@ -24,11 +24,11 @@ describe("Game Directory Service", () => {
         willRespondWith: {
           status: 200,
           body: Matchers.somethingLike({
-            id: Matchers.like(1),
-            name: Matchers.like("Halo"),
-            console: Matchers.like("PC"),
-            genre: Matchers.like("FPS"),
-            img: Matchers.like("https://www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg"),
+            id: Matchers.string(1),
+            name: Matchers.string("Halo"),
+            console: Matchers.string("PC"),
+            genre: Matchers.string("FPS"),
+            img: Matchers.string("https://www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg"),
           }),
         },
       });

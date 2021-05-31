@@ -18,16 +18,10 @@ describe("Game Directory Service", () => {
         withRequest: {
           method: "POST",
           path: "/games",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: game,
         },
         willRespondWith: {
           status: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: Matchers.somethingLike({
             name: Matchers.like("Halo"),
             console: Matchers.like("PC"),

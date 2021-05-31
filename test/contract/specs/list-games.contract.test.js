@@ -15,9 +15,6 @@ describe('Game Directory Service', () => {
                 },
                 willRespondWith: {
                     status: 200,
-                    headers:{
-                        'Content-Type': 'application/json'
-                    },
                     body: Matchers.eachLike(
                         {
                             name: Matchers.like('Assassins Creed'),

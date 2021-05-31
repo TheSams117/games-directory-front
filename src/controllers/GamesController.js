@@ -6,9 +6,6 @@ export const GamesController = {
             method: 'POST',
             baseURL: process.env.API,
             url: 'games',
-            headers:{
-                'Content-Type': 'application/json'
-            },
             data: game
         });
     },
@@ -31,9 +28,6 @@ export const GamesController = {
             method: 'PUT',
             baseURL: process.env.API,
             url: `games`,
-            headers:{
-                'Content-Type': 'application/json'
-            },
             data: game
         });
     }

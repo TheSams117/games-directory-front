@@ -4,7 +4,6 @@ import Dialog from "@material-ui/core/Dialog";
 import { Typography } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from "prop-types";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const AddGameDialog = (props) => {
   const classes = useStyles();
   let history = useHistory();
-  const { title, message, open, setOpen, game } = props;
+  const { open, setOpen, game } = props;
   const [gameName, setGameName] = useState("");
   const [console, setConsole] = useState("");
   const [gameGenre, setGameGenre] = useState("");
@@ -38,16 +37,6 @@ const AddGameDialog = (props) => {
 
   const handleChange = (event) => {
     setConsole(event.target.value);
-  };
-
-  const handleInputChange = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
   };
 
   const handleSubmit = () => {
@@ -65,7 +54,7 @@ const AddGameDialog = (props) => {
       genre: gameGenre,
       img: gameImgUrl,
     };
-    /**axios
+    axios
       .post(`games`, data)
       .then((res) => {
         console.log(res);
@@ -77,7 +66,7 @@ const AddGameDialog = (props) => {
       .catch((err) => {
         setOpen(false);
         // console.log(err)
-      });*/
+      });
   };
 
   const editGame = () => {

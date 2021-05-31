@@ -14,9 +14,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import { useState, useEffect } from "react";
+import AddGameDialog from "./add-game-dialog";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -179,7 +181,7 @@ export default function GameDirectory() {
       GamesController.add(data).then((res) => {
         console.log(res);
         if (res.status === 200) {
-          console.log("Juego agregado con éxito game directory");
+          console.log("Juego agregado con éxito");
           getGames();
           restartValues();
           setOpenEditDialog(false);
@@ -243,7 +245,7 @@ export default function GameDirectory() {
       <AppBar position="relative">
         <Toolbar>
           <SportsEsportsIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
+          <Typography data-testid="appbar-title-directory" variant="h6" color="inherit" noWrap>
             Directorio de juegos
           </Typography>
         </Toolbar>
@@ -257,6 +259,7 @@ export default function GameDirectory() {
               align="center"
               color="textPrimary"
               gutterBottom
+              data-testid="container-title-directory"
             >
               Directorio de juegos
             </Typography>
@@ -264,6 +267,7 @@ export default function GameDirectory() {
               variant="h6"
               align="center"
               color="textSecondary"
+              data-testid="container-paragraph-directory"
               paragraph
             >
               En esta página podras ver, agregar, editar y eliminar juegos que
@@ -276,6 +280,7 @@ export default function GameDirectory() {
                     id-button="btn-add"
                     variant="contained"
                     color="primary"
+                    data-testid="button-add"
                     onClick={() => handleCreate()}
                   >
                     Agregar
@@ -289,24 +294,26 @@ export default function GameDirectory() {
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={classes.card} id={card.id}>
+                <Card className={classes.card} id={card.id} data-testid="card-main">
                   <CardMedia
                     className={classes.cardMedia}
                     image={card.img}
                     title="Image title"
+                    data-testid="card-img"
                   />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                  <CardContent className={classes.cardContent} data-testid="card-content">
+                    <Typography gutterBottom variant="h5" component="h2" data-testid="card-name">
                       {card.name}
                     </Typography>
-                    <Typography>{card.console}</Typography>
-                    <Typography>{card.genre}</Typography>
+                    <Typography data-testid="card-console">{card.console}</Typography>
+                    <Typography data-testid="card-genre">{card.genre}</Typography>
                   </CardContent>
-                  <CardActions>
+                  <CardActions data-testid="card-actions">
                     <Button
                       id="btn-edit"
                       size="small"
                       color="primary"
+                      data-testid="card-button-edit"
                       onClick={() => handleEdit(card)}
                     >
                       Editar
@@ -315,6 +322,7 @@ export default function GameDirectory() {
                       id="btn-delete"
                       size="small"
                       color="primary"
+                      data-testid="card-button-delete"
                       onClick={() => handleDelete(card.id)}
                     >
                       Eliminar
@@ -327,14 +335,15 @@ export default function GameDirectory() {
               open={openEditDialog}
               onClose={handleClose}
               aria-labelledby="form-dialog-title"
+              data-testid="dialog-main"
             >
               <DialogTitle id="form-dialog-title" disableTypography={true}>
-                <Typography variant="h4" color="primary">
+                <Typography variant="h4" color="primary" data-testid="title-add-game">
                   {gameSelected == null ? "Agregar juego" : "Editar juego"}
                 </Typography>
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent data-testid="dialog-content">
                 {/* <DialogContentText variant="h4" color="textSecondary">
                             {message}
                             </DialogContentText> */}
@@ -348,10 +357,11 @@ export default function GameDirectory() {
                       }
                       onChange={(e) => setGameName(e.target.value)}
                       type="text"
+                      data-testid="textfield-name"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <FormControl className={classes.formControl}>
+                    <FormControl className={classes.formControl} data-testid="select-console">
                       <InputLabel id="select-console">Consola</InputLabel>
                       <Select
                         labelId="select-console"
@@ -368,33 +378,35 @@ export default function GameDirectory() {
 
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      id="game-name"
+                      id="game-genre"
                       label="Género"
                       defaultValue={
                         gameSelected == null ? "" : gameSelected.genre
                       }
                       onChange={(e) => setGameGenre(e.target.value)}
                       type="text"
+                      data-testid="textfield-genre"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      id="game-name"
+                      id="game-img"
                       label="Ruta de la imagen"
                       defaultValue={
                         gameSelected == null ? "" : gameSelected.img
                       }
                       onChange={(e) => setGameImgUrl(e.target.value)}
                       type="text"
+                      data-testid="textfield-img"
                     />
                   </Grid>
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleSubmit} color="primary">
+                <Button onClick={handleSubmit} color="primary" data-testid="button-add-dialog">
                   {gameSelected == null ? "Agregar" : "Editar"}
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="primary" data-testid="button-cancel-dialog">
                   Cancelar
                 </Button>
               </DialogActions>
@@ -404,7 +416,7 @@ export default function GameDirectory() {
       </main>
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          Sergio Lozada - Felipe Castillo
+          Sergio Lozada - Felipe Castillo - Johan Cortés
         </Typography>
         <Typography
           variant="subtitle1"

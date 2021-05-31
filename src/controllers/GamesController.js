@@ -26,7 +26,7 @@ export const GamesController = {
             url: `games/${idGame}`
         });
     },
-    update(game){
+    update(game) {
         return axios({
             method: 'PUT',
             baseURL: process.env.API,

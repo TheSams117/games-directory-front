@@ -4,7 +4,7 @@ exports[`Game Directory Service When a request to add a game is made Then it sho
 Object {
   "console": "PC",
   "genre": "FPS",
-  "img": "https://www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg",
+  "img": "www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg",
   "name": "Halo",
 }
 `;

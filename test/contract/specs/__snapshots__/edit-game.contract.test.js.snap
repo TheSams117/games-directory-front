@@ -5,7 +5,7 @@ Object {
   "console": "PC",
   "genre": "FPS",
   "id": 1,
-  "img": "https://www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg",
+  "img": "www.enter.co/wp-content/uploads/2019/06/Halo-1024x768.jpg",
   "name": "Halo",
 }
 `;

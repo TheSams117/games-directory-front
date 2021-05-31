@@ -15,14 +15,12 @@ describe("Game Directory Service", () => {
         },
         willRespondWith: {
           status: 200,
-          body: {
+          body: Matchers.eachLike({
             name: Matchers.string("Assassins Creed"),
             console: Matchers.string("PC"),
             genre: Matchers.string("Action"),
-            img: Matchers.string(
-              "https://images3.alphacoders.com/823/thumb-1920-82365.jpg"
-            ),
-          }
+            img: Matchers.string("images3.alphacoders.com/823/thumb-1920-82365.jpg"),
+          }),
         },
       });
     });

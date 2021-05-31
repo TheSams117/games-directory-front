@@ -16,7 +16,7 @@ describe("Game Directory Service", () => {
         },
         willRespondWith: {
           status: 200,
-          body: Matchers.string("ok")
+          body: Matchers.like("ok")
         },
       });
     });

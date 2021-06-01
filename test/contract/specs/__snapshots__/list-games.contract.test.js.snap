@@ -5,7 +5,8 @@ Array [
   Object {
     "console": "PC",
     "genre": "Action",
-    "img": "images3.alphacoders.com/823/thumb-1920-82365.jpg",
+    "id": 1,
+    "img": "https://images3.alphacoders.com/823/thumb-1920-82365.jpg",
     "name": "Assassins Creed",
   },
 ]

@@ -16,10 +16,11 @@ describe("Game Directory Service", () => {
         willRespondWith: {
           status: 200,
           body: Matchers.eachLike({
+            id: Matchers.like(1),
             name: Matchers.string("Assassins Creed"),
             console: Matchers.string("PC"),
             genre: Matchers.string("Action"),
-            img: Matchers.string("images3.alphacoders.com/823/thumb-1920-82365.jpg"),
+            img: Matchers.string("https://images3.alphacoders.com/823/thumb-1920-82365.jpg")
           }),
         },
       });

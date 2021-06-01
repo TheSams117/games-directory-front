@@ -87,6 +87,7 @@ export default function GameDirectory() {
     const [gameGenre, setGameGenre] = useState("");
     const [gameImgUrl, setGameImgUrl] = useState("");
     const [gameSelected, setGameSelected] = useState(null);
+    const [btnDisabled, setBtnDisabled] = useState(true);
     useEffect(() => {
         if (cards.length === 0) {
             getGames();
@@ -106,6 +107,9 @@ export default function GameDirectory() {
                 })
                 .catch((err) => console.log(err));
     }
+    const handleButtonStatus = () => {
+        
+    };
     const handleDelete = (idGame) => {
         axios
             .delete(
@@ -128,9 +132,14 @@ export default function GameDirectory() {
     };
     const handleEdit = (game) => {
         setGameSelected(game);
+        setGameName(game.name);
+        setConsoleGame(game.console);
+        setGameGenre(game.genre);
+        setGameImgUrl(game.img);   
         setOpenEditDialog(true)
     };
     const handleClose = () => {
+        restartValues()  
         setOpenEditDialog(false);
       };
     const handleChange = (event) => {
@@ -209,6 +218,7 @@ export default function GameDirectory() {
         setGameGenre("");
         setGameImgUrl("");        
     } 
+    
 
     return (
         <React.Fragment>
@@ -234,7 +244,7 @@ export default function GameDirectory() {
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
                                     <Button
-                                        id-button="btn-add"
+                                        id="btn-add"
                                         variant="contained"
                                         color="primary"
                                         onClick={() => handleCreate()}
@@ -250,7 +260,7 @@ export default function GameDirectory() {
                     <Grid container spacing={4}>
                         {cards.map((card) => (
                             <Grid item key={card} xs={12} sm={6} md={4}>
-                                <Card className={classes.card} id={card.id}>
+                                <Card className={classes.card} id={card.name}>
                                     <CardMedia
                                         className={classes.cardMedia}
                                         image={card.img}
@@ -319,7 +329,7 @@ export default function GameDirectory() {
                                 <InputLabel id="select-console">Consola</InputLabel>
                                 <Select
                                     labelId="select-console"
-                                    id="demo-simple-select"
+                                    id="select-game-console"
                                     value={consoleGame}
                                     onChange={handleChange}
                                 >
@@ -333,7 +343,7 @@ export default function GameDirectory() {
 
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                id="game-name"
+                                id="game-genre"
                                 label="Género"
                                 defaultValue={gameSelected == null ? "" : gameSelected.genre}
                                 onChange={e => setGameGenre(e.target.value)}
@@ -342,7 +352,7 @@ export default function GameDirectory() {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                id="game-name"
+                                id="game-imgurl"
                                 label="Ruta de la imagen"
                                 defaultValue={gameSelected == null ? "" : gameSelected.img}
                                 onChange={e => setGameImgUrl(e.target.value)}
@@ -353,10 +363,15 @@ export default function GameDirectory() {
 
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleSubmit} color="primary">
+                            <Button 
+                            id="btn-dialog-edit-add" 
+                            onClick={handleSubmit} 
+                            color="primary"
+                            disabled={gameName == "" || gameGenre == "" || consoleGame == "" || gameImgUrl == ""}
+                            >
                             {gameSelected == null ? "Agregar" : "Editar"}
                             </Button>
-                            <Button onClick={handleClose} color="primary">
+                            <Button id="btn-dialog-cancel" onClick={handleClose} color="primary">
                                 Cancelar
                             </Button>
                         </DialogActions>

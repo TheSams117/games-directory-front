@@ -29,8 +29,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://games-directory-front.herokuapp.com/">
+        Games Directory
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

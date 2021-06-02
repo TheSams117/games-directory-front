@@ -6,23 +6,23 @@ on:
     - '**'
   pull_request:
     branches: [ main ]
-
-  jobs:
-    e2e:test:
-      runs-on: ubuntu-latest
-      steps:
-        -name: chechout e2e ui repo
+    
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout e2e ui repo
         uses: actions/checkout@v2
         with:
-          repositoru: TheSams117/games-directory-front-test
-        - name: use node.js 12
-        uses: action/setup-node@v2
+          repository: TheSams117/games-directory-front-test
+      - name: use node.js 12
+        uses: actions/setup-node@v2
         with:
           node-version: 12.x
-        - name: install dependencies
-          run: npm ci
-        - name: execute e2e ui test
-          uses: cypress-io/github-action@v2
-          with:
-            wait-on: "https://games-directory-front.herokuapp.com/"
-            browser: chrome
+      - name: install dependencies
+        run: npm ci
+      - name: execute e2e ui tests
+        uses: cypress-io/github-action@v2
+        with:
+          wait-on: "https://games-directory-front.herokuapp.com/"
+          browser: chrome

@@ -1,10 +1,11 @@
 import axios from 'axios';
+const url = "https://games-directory-back.herokuapp.com/"
 
 export const GamesController = {
     add(game) {
         return axios({
             method: 'POST',
-            baseURL: process.env.API,
+            baseURL: url,
             url: 'games',
             data: game
         });
@@ -12,21 +13,21 @@ export const GamesController = {
     list() {
         return axios({
             method: 'GET',
-            baseURL: process.env.API,
+            baseURL: url,
             url: 'games'
         });
     },
     delete(idGame) {
         return axios({
             method: 'DELETE',
-            baseURL: process.env.API,
+            baseURL: url,
             url: `games/${idGame}`
         });
     },
     update(game) {
         return axios({
             method: 'PUT',
-            baseURL: process.env.API,
+            baseURL: url,
             url: `games`,
             data: game
         });

@@ -14,6 +14,14 @@ test("The game directory component shows the dialog to add a game", () => {
     expect(screen.getByTestId("select-console")).toBeInTheDocument();
     expect(screen.getByTestId("textfield-genre")).toHaveTextContent("Género");
     expect(screen.getByTestId("textfield-img")).toHaveTextContent("Ruta de la imagen");
-    expect(screen.getByTestId("button-add-dialog")).toBeInTheDocument();
-    expect(screen.getByTestId("button-cancel-dialog")).toBeInTheDocument();
-  });
+    
+});
+
+test("The dialog shows the button add disabled and the cancel button abled", () => {
+  const { getByTestId } = render(<GameDirectory />);
+  fireEvent.click(getByTestId("button-add"));
+  expect(screen.getByTestId("button-add-dialog")).toBeInTheDocument();
+  expect(screen.getByTestId("button-add-dialog")).toBeDisabled();
+  expect(screen.getByTestId("button-cancel-dialog")).toBeInTheDocument();
+  expect(screen.getByTestId("button-cancel-dialog")).not.toBeDisabled();
+});
